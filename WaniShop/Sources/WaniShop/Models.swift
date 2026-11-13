@@ -1,0 +1,161 @@
+import Foundation
+
+let defaultSettings: [String: String] = [
+    "shop_name": "Wani Hardware Store",
+    "currency": "₹",
+    "footer": "Thank you. Visit again!",
+    "paper_mm": "80",
+    "next_no": "1",
+    "low_default": "2",
+    "seq": "0",
+    "cust_seq": "0",
+]
+
+func trimmed(_ s: String) -> String {
+    s.trimmingCharacters(in: .whitespacesAndNewlines)
+}
+
+func formatMoney(_ n: Double, currency: String) -> String {
+    let f = NumberFormatter()
+    f.numberStyle = .decimal
+    f.locale = Locale(identifier: "en_IN")
+    f.minimumFractionDigits = 0
+    f.maximumFractionDigits = 2
+    return currency + (f.string(from: NSNumber(value: n)) ?? String(n))
+}
+
+struct SaleLine: Codable {
+    var bc: String
+    var n: String
+    var q: Int
+    var p: Double
+}
+
+struct Item: Codable, Identifiable {
+    var barcode: String
+    var name: String
+    var price: Double
+    var cost: Double
+    var qty: Int
+    var low: Int?
+    var cat: String
+
+    var id: String { barcode }
+
+    init(barcode: String, name: String, price: Double, cost: Double = 0,
+         qty: Int = 0, low: Int? = nil, cat: String = "") {
+        self.barcode = barcode
+        self.name = name
+        self.price = price
+        self.cost = cost
+        self.qty = qty
+        self.low = low
+        self.cat = cat
+    }
+
+    enum CodingKeys: String, CodingKey { case barcode, name, price, cost, qty, low, cat }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        barcode = try c.decodeIfPresent(String.self, forKey: .barcode) ?? ""
+        name = try c.decode(String.self, forKey: .name)
+        price = try c.decodeIfPresent(Double.self, forKey: .price) ?? 0
+        cost = try c.decodeIfPresent(Double.self, forKey: .cost) ?? 0
+        qty = try c.decodeIfPresent(Int.self, forKey: .qty) ?? 0
+        low = try c.decodeIfPresent(Int.self, forKey: .low)
+        cat = try c.decodeIfPresent(String.self, forKey: .cat) ?? ""
+    }
+}
+
+struct Sale: Codable, Identifiable {
+    var no: Int
+    var t: Double
+    var total: Double
+    var disc: Double
+    var profit: Double
+    var lines: [SaleLine]
+    var cust: String
+    var contact: String
+    var paid: Double?
+    var method: String?
+    var uid: String
+
+    var id: Int { no }
+
+    init(no: Int, t: Double, total: Double, disc: Double, profit: Double, lines: [SaleLine],
+         cust: String, contact: String, paid: Double?, method: String?, uid: String? = nil) {
+        self.no = no
+        self.t = t
+        self.total = total
+        self.disc = disc
+        self.profit = profit
+        self.lines = lines
+        self.cust = cust
+        self.contact = contact
+        self.paid = paid
+        self.method = method
+        self.uid = uid ?? UUID().uuidString
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case no, t, total, disc, profit, lines, cust, contact, paid, method, uid
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        no = try c.decode(Int.self, forKey: .no)
+        t = try c.decodeIfPresent(Double.self, forKey: .t) ?? 0
+        total = try c.decodeIfPresent(Double.self, forKey: .total) ?? 0
+        disc = try c.decodeIfPresent(Double.self, forKey: .disc) ?? 0
+        profit = try c.decodeIfPresent(Double.self, forKey: .profit) ?? 0
+        lines = try c.decodeIfPresent([SaleLine].self, forKey: .lines) ?? []
+        cust = try c.decodeIfPresent(String.self, forKey: .cust) ?? ""
+        contact = try c.decodeIfPresent(String.self, forKey: .contact) ?? ""
+        paid = try c.decodeIfPresent(Double.self, forKey: .paid)
+        method = try c.decodeIfPresent(String.self, forKey: .method)
+        uid = try c.decodeIfPresent(String.self, forKey: .uid) ?? legacySaleUid(no: no, t: t)
+    }
+}
+
+struct Payment: Codable, Identifiable {
+    var id: String = UUID().uuidString
+    var cust: String
+    var contact: String
+    var amount: Double
+    var t: Double
+    var method: String
+}
+
+/// Same shape as the Android app's JSON backup, so backups can move between phones.
+struct Backup: Codable {
+    var format: Int = 2
+    var created: Double = Date().timeIntervalSince1970
+    var shop: String = ""
+    var items: [String: Item] = [:]
+    var sales: [Sale] = []
+    var payments: [Payment] = []
+    var settings: [String: String] = [:]
+    var hasPayments = false
+    var rev: String? = nil
+    var revs: [String] = []
+
+    init() {}
+
+    enum CodingKeys: String, CodingKey {
+        case format, created, shop, items, sales, payments, settings, rev, revs
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        format = try c.decodeIfPresent(Int.self, forKey: .format) ?? 2
+        created = try c.decodeIfPresent(Double.self, forKey: .created) ?? Date().timeIntervalSince1970
+        shop = try c.decodeIfPresent(String.self, forKey: .shop) ?? ""
+        items = try c.decodeIfPresent([String: Item].self, forKey: .items) ?? [:]
+        sales = try c.decodeIfPresent([Sale].self, forKey: .sales) ?? []
+        payments = try c.decodeIfPresent([Payment].self, forKey: .payments) ?? []
+        hasPayments = c.contains(.payments)
+        rev = try c.decodeIfPresent(String.self, forKey: .rev)
+        revs = try c.decodeIfPresent([String].self, forKey: .revs) ?? []
+        settings = try c.decodeIfPresent([String: String].self, forKey: .settings) ?? [:]
+    }
+}

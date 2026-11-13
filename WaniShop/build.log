@@ -1,0 +1,42 @@
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+Another instance of SwiftPM (PID: 31374) is already running using '/home/naveed/shop-build/PROJECTS-NF/WaniShop/.build', waiting until that process has finished execution.../opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-package: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+/opt/swift/usr/bin/swift-build: /usr/lib/libxml2.so.2: no version information available (required by /opt/swift/usr/bin/../lib/swift/linux/libFoundationXML.so)
+Building for debugging...
+[Computing dependencies]
+[3 / 3] WaniShop-App-product
+Build complete! (2.29 secs)
+Planning...
+Waiting for device to be connected...
+Installing to device: iPhone (udid: 00008101-000B39DA14B9001E)
+
+[Unpacking app] ...[Unpacking app] 100%
+[Preparing device]   0%[Preparing device]  50%[Preparing device] 100%
+[Provisioning]   0%[Provisioning]  33%ecting]  83%[Connecting] 100%
+[Installing]   0%[Installing]  48%[Installing]  96%[Installing] 100%

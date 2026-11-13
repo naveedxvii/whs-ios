@@ -1,0 +1,99 @@
+import SwiftUI
+
+/// The Google Drive backup section shown at the top of Settings.
+struct GoogleDriveSection: View {
+    @EnvironmentObject var store: ShopStore
+    @State private var signedIn = GoogleAuth.shared.isSignedIn
+    @State private var busy = false
+    @State private var message: String?
+    @State private var pendingBackup: Backup?
+    @State private var pendingDate: Date?
+
+    var body: some View {
+        Section {
+            if signedIn {
+                Button("Save to Google Drive") {
+                    Task { await save() }
+                }
+                Button("Load from Google Drive") {
+                    Task { await load() }
+                }
+                Button("Sign out of Google", role: .destructive) {
+                    GoogleAuth.shared.signOut()
+                    signedIn = false
+                    message = "Signed out."
+                }
+            } else {
+                Button("Sign in with Google") {
+                    Task { await signIn() }
+                }
+            }
+            if busy {
+                ProgressView()
+            }
+            if let message {
+                Text(message).font(.footnote).foregroundStyle(.secondary)
+            }
+        } header: {
+            Text("Google Drive backup")
+        } footer: {
+            Text("Data is saved to a private app folder in your Google account. Phones signed in to the same account share the same data: save on one phone, then load on the other.")
+        }
+        .alert("Replace this phone's stock and sales?", isPresented: Binding(
+            get: { pendingBackup != nil },
+            set: { if !$0 { pendingBackup = nil } })) {
+            Button("Replace", role: .destructive) { applyPending() }
+            Button("Cancel", role: .cancel) { pendingBackup = nil }
+        } message: {
+            let when = pendingDate.map { $0.formatted(date: .abbreviated, time: .shortened) } ?? "an unknown time"
+            Text("The Drive backup was saved \(when). It replaces what is on this phone. A copy of the current data is kept first.")
+        }
+    }
+
+    private func signIn() async {
+        busy = true
+        defer { busy = false }
+        do {
+            try await GoogleAuth.shared.signIn()
+            signedIn = true
+            AutoSync.shared.changed(store)
+            message = "Signed in to Google. Your data will now save automatically."
+        } catch {
+            message = "Sign-in failed: \(error.localizedDescription)"
+        }
+    }
+
+    private func save() async {
+        busy = true
+        defer { busy = false }
+        do {
+            let date = try await DriveSync.upload(store.syncState.data)
+            message = "Saved to Google Drive at \(date.formatted(date: .abbreviated, time: .shortened))."
+        } catch {
+            message = "Save failed: \(error.localizedDescription)"
+        }
+    }
+
+    private func load() async {
+        busy = true
+        defer { busy = false }
+        do {
+            let (data, date) = try await DriveSync.download()
+            let backup = try JSONDecoder().decode(Backup.self, from: data)
+            guard !backup.items.isEmpty || !backup.sales.isEmpty else {
+                throw GoogleError.noBackup
+            }
+            pendingBackup = backup
+            pendingDate = date
+        } catch {
+            message = "Load failed: \(error.localizedDescription)"
+        }
+    }
+
+    private func applyPending() {
+        guard let backup = pendingBackup else { return }
+        store.applySync(backup)
+        message = "Loaded \(backup.items.count) items and \(backup.sales.count) sales from Google Drive."
+        pendingBackup = nil
+    }
+}
